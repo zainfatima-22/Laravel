@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 use App\Models\Job;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class JobController extends Controller
 {
@@ -16,7 +18,7 @@ class JobController extends Controller
         return view('jobs.create');
     }
     public function store(){
-            request() -> validate([
+        request() -> validate([
             'title' => ['required',"min:3"],
             'salary' => ['required']
         ]);
@@ -36,11 +38,17 @@ class JobController extends Controller
 
     }
     public function edit(Job $job){
-            request()->validate([
+        if(Auth::guest()){
+            return redirect('/login');
+        }
+        if($job->employer->user->isNot(Auth::user())){
+            abort(403);
+        }
+
+        request()->validate([
             'title' => ['required', 'min:3'],
             'salary' => ['required'],
         ]);
-
         $job->update([
             'Title' => request('title'),
             'Salary' => request('salary'),
@@ -50,5 +58,6 @@ class JobController extends Controller
         ]);
 
         return redirect('/jobs/' . $job->id)->with('success', 'Job updated successfully.');
-        }
+    }
+
 }

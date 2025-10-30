@@ -3,6 +3,11 @@
     <x-slot:heading>Job Details</x-slot:heading>
 
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+        @if(session('success'))
+            <div class="max-w-3xl mx-auto mb-6 p-4 bg-green-100 text-green-800 rounded-lg border border-green-300 shadow">
+                {{ session('success') }}
+            </div>
+        @endif
     <div class="min-h-screen bg-gray-50 flex items-start justify-center p-6 sm:p-10 lg:p-16">
         <div 
             x-data="{ isEditing: false }" 
@@ -81,19 +86,22 @@
 
                 <div class="pt-8 space-y-6">
                     <h3 class="text-2xl font-bold text-gray-800 border-b pb-3">About the Role</h3>
+
+                    {{-- Edit mode: textarea pre-filled with existing description (case-insensitive) --}}
                     <template x-if="isEditing">
                         <textarea name="description"
                                 rows="8"
-                                class="w-full p-3 border border-gray-300 rounded-lg focus:ring-4 focus:ring-indigo-200 focus:border-indigo-500 transition duration-200 ease-in-out shadow-sm hover:shadow-md">
-                            {{ $job['Description'] ?? 'This is where the full, rich job description will go. We are looking for a highly motivated individual to join our growing team. You will be responsible for ... (Detailed description content here).' }}
-                        </textarea>
+                                class="w-full p-3 border border-gray-300 rounded-lg focus:ring-4 focus:ring-indigo-200 focus:border-indigo-500 transition duration-200 ease-in-out shadow-sm hover:shadow-md">{{ old('description', $job->Description ?? $job->description ?? '') }}</textarea>
                     </template>
 
+                    {{-- View mode: display actual description if present, otherwise fallback --}}
                     <template x-if="!isEditing">
-                        @if(!empty($job['description']))
-                            <p class="text-gray-600 leading-relaxed">
-                                {{ $job['description'] }}
-                            </p>
+                        @php
+                            $desc = $job->Description ?? $job->description ?? '';
+                        @endphp
+
+                        @if(!empty(trim($desc)))
+                            <p class="text-gray-600 leading-relaxed whitespace-pre-line">{{ $desc }}</p>
                         @else
                             <p class="text-gray-500 italic leading-relaxed">
                                 This is where the full, rich job description will go. We are looking for a highly motivated individual to join our growing team. You will be responsible for ... (Detailed description content here).
@@ -108,7 +116,6 @@
                         <li class="hover:text-indigo-600 transition-colors">Flexible working hours and remote options</li>
                     </ul>
                 </div>
-
 
                 <div class="mt-12 flex justify-center space-x-4">
                     <template x-if="isEditing">

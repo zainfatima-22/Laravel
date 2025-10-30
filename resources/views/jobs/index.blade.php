@@ -6,7 +6,6 @@
 
     <div class="min-h-screen bg-gray-50 p-6 sm:p-10 lg:p-16 relative">
 
-        {{-- ✅ Flash Message --}}
         @if(session('success'))
             <div class="max-w-3xl mx-auto mb-6 p-4 bg-green-100 text-green-800 rounded-lg border border-green-300 shadow">
                 {{ session('success') }}
@@ -38,13 +37,23 @@
         <div class="space-y-6 max-w-5xl mx-auto">
 
             @foreach ($jobs as $job)
+                @php
+                    // defensive: ensure employer relation exists
+                    $employer = $job->employer ?? null;
+                    $isMyJob = false;
+                    if ($employer && auth()->check()) {
+                        $isMyJob = $employer->user_id === auth()->id();
+                    }
+                @endphp
+
                 <div
-                    class="p-6 bg-white/70 backdrop-blur-md border border-white/30 rounded-2xl shadow-lg transition duration-300 ease-in-out transform hover:scale-[1.01] hover:shadow-xl hover:border-indigo-400/50"
+                    class="p-6 bg-white/70 backdrop-blur-md border border-white/30 rounded-2xl shadow-lg transition duration-300 ease-in-out transform hover:scale-[1.01] hover:shadow-xl hover:border-indigo-400/50 relative
+                           {{ $isMyJob ? 'bg-indigo-50 border-indigo-300/70' : '' }}"
                 >
                     <div class="flex items-center justify-between">
                         <a href="/jobs/{{ $job['id'] }}" class="flex-1 block">
                             <div class="font-bold text-sm tracking-wider uppercase text-indigo-600 mb-1">
-                                {{ $job->employer->name }}
+                                {{ $employer->name ?? '—' }}
                             </div>
                             <div class="text-2xl font-semibold text-gray-800 transition duration-300 hover:text-indigo-700">
                                 {{ $job['Title'] }}
@@ -62,7 +71,8 @@
                                 Pays {{ $job['Salary'] }}
                             </span>
 
-                            
+                            {{-- show delete only when it's the current user's job --}}
+                            @if ($isMyJob)
                                 <form method="POST" action="/jobs/{{ $job->id }}"
                                       onsubmit="return confirm('Are you sure you want to delete this job?');">
                                     @csrf
@@ -71,12 +81,20 @@
                                             class="inline-flex items-center px-3 py-2 text-sm font-semibold text-white bg-red-600 rounded-full hover:bg-red-700 focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-red-400 transition">
                                         <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M1 7h22M10 3h4a1 1 0 011 1v1H9V4a1 1 0 011-1z"/>
+                                                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M10 3h4a1 1 0 011 1v1H9V4a1 1 0 011-1z"/>
                                         </svg>
                                     </button>
                                 </form>
+                            @endif
                         </div>
                     </div>
+
+                    {{-- badge for your post --}}
+                    @if ($isMyJob)
+                        <span class="absolute top-1 right-1 text-xs font-semibold text-indigo-800 bg-indigo-100 border border-indigo-300 px-3 py-1 rounded-full shadow-sm">
+                            Your Post
+                        </span>
+                    @endif
                 </div>
             @endforeach
 
