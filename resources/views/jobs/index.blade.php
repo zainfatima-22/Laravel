@@ -6,7 +6,6 @@
 
     <div class="min-h-screen bg-gray-50 p-6 sm:p-10 lg:p-16 relative">
 
-        {{-- ✅ Flash Message --}}
         @if(session('success'))
             <div class="max-w-3xl mx-auto mb-6 p-4 bg-green-100 text-green-800 rounded-lg border border-green-300 shadow">
                 {{ session('success') }}

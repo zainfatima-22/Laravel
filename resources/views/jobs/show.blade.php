@@ -3,6 +3,11 @@
     <x-slot:heading>Job Details</x-slot:heading>
 
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+        @if(session('success'))
+            <div class="max-w-3xl mx-auto mb-6 p-4 bg-green-100 text-green-800 rounded-lg border border-green-300 shadow">
+                {{ session('success') }}
+            </div>
+        @endif
     <div class="min-h-screen bg-gray-50 flex items-start justify-center p-6 sm:p-10 lg:p-16">
         <div 
             x-data="{ isEditing: false }" 
