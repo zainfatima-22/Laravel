@@ -5,6 +5,14 @@ use App\Http\Controllers\RegisteredUserController;
 use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 
+/* Route::get('test', function (){
+    dispatch(function(){
+        logger("Hello from the queue!");
+    });
+    return 'done';
+}); */
+
+// 
 Route::view('/', "welcome");
 Route::view('/contact', "contact");
 Route::view('/about', "about");
