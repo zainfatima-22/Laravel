@@ -1,31 +1,18 @@
 <?php
 
-use App\Models\Employer;
-use App\Models\Job;
+use App\Http\Controllers\JobController;
 use Illuminate\Support\Facades\Route;
 
+Route::view('/', "welcome");
+Route::view('/contact', "contact");
+Route::view('/about', "about");
+/* Route::controller(JobController::class)->group(function(){
+    Route::get('/jobs', 'index');
+    Route::get('/jobs/create', 'create');
+    Route::post('/jobs','store');
+    Route::get('/jobs/{job}', 'show');
+    Route::delete('/jobs/{job}', 'destro');
+    Route::patch('/jobs/{job}', 'edit');
+}); */
 
-
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('/jobs', function(){
-    $job = Job::with('employer')->simplePaginate(4);
-    return view('jobs', [
-        'jobs' => $job
-    ]);
-});
-
-Route::get('/jobs/{id}', function ($id){
-    $job = Job::find($id);
-    /* Arr::first($jobs, function($job) use($id) {
-        $d = $job['id'] == $id;
-        dd($d);
-    }); */
-    return view('job', ['job' => $job]);
-});
-
-Route::get('/contact', function(){
-    return view('contact');
-});
+Route::resource('jobs', JobController::class);
