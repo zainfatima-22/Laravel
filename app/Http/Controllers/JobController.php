@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 use App\Models\Job;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -38,10 +37,7 @@ class JobController extends Controller
         return redirect('/jobs')->with('success', 'Job deleted successfully.');
 
     }
-    public function update(Job $job){
-        /* Gate::define('update-job', function (User $user, Job $job){
-            return $job->employer->user->is($user());
-        }); */
+    public function edit(Job $job){
         if(Auth::guest()){
             return redirect('/login');
         }
