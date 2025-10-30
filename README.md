@@ -57,7 +57,7 @@ Employers can post, edit, and delete job listings, while users can browse and ap
 **Screenshots:**
 <img width="2992" height="1574" alt="image" src="https://github.com/user-attachments/assets/e61aa483-8995-4f82-af49-e59c2a005ffd" />
 <img width="2896" height="1574" alt="image" src="https://github.com/user-attachments/assets/bfd5e59e-ee33-4ab2-8b70-d1492de1cd47" />
-<img width="2964" height="1568" alt="image" src="https://github.com/user-attachments/assets/3954503b-e799-4c7f-813d-89e6a7168b48" />
+<img width="1788" height="1560" alt="image" src="https://github.com/user-attachments/assets/ae66333b-7a97-4e18-a123-8ebbae3a6584" />
 <img width="1858" height="1558" alt="image" src="https://github.com/user-attachments/assets/e4f47a8c-2bb4-4474-a21d-c3a51870fba4" />
 <img width="1724" height="1576" alt="image" src="https://github.com/user-attachments/assets/b41f15ba-ca48-4b0a-b176-f367e7a58625" />
 
