@@ -21,7 +21,7 @@ Route::controller(JobController::class)->group(function(){
     Route::get('/jobs/create', 'create')->middleware('auth');
     Route::post('/jobs','store');
     Route::get('/jobs/{job}', 'show');
-    Route::delete('/jobs/{job}', 'destro');
+    Route::delete('/jobs/{job}', 'destroy');
     Route::patch('/jobs/{job}', 'edit')->middleware('auth');
 }); 
 
