@@ -1,31 +1,35 @@
 <?php
 
-use App\Models\Employer;
-use App\Models\Job;
+use App\Http\Controllers\JobController;
+use App\Http\Controllers\RegisteredUserController;
+use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 
+/* Route::get('test', function (){
+    dispatch(function(){
+        logger("Hello from the queue!");
+    });
+    return 'done';
+}); */
 
+// 
+Route::view('/', "welcome");
+Route::view('/contact', "contact");
+Route::view('/about', "about");
+Route::controller(JobController::class)->group(function(){
+    Route::get('/jobs', 'index');
+    Route::get('/jobs/create', 'create')->middleware('auth');
+    Route::post('/jobs','store');
+    Route::get('/jobs/{job}', 'show');
+    Route::delete('/jobs/{job}', 'destroy');
+    Route::patch('/jobs/{job}', 'edit')->middleware('auth');
+}); 
 
-Route::get('/', function () {
-    return view('welcome');
-});
+/* Route::resource('jobs', JobController::class); */
 
-Route::get('/jobs', function(){
-    $job = Job::with('employer')->simplePaginate(4);
-    return view('jobs', [
-        'jobs' => $job
-    ]);
-});
+Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
+Route::post('/register', [RegisteredUserController::class, 'store']);
 
-Route::get('/jobs/{id}', function ($id){
-    $job = Job::find($id);
-    /* Arr::first($jobs, function($job) use($id) {
-        $d = $job['id'] == $id;
-        dd($d);
-    }); */
-    return view('job', ['job' => $job]);
-});
-
-Route::get('/contact', function(){
-    return view('contact');
-});
+Route::get('/login', [LoginController::class, 'create'])->name('login');
+Route::post('/login', [LoginController::class, 'store']);
+Route::delete('/logout', [LoginController::class, 'destroy']);
