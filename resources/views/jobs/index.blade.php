@@ -38,7 +38,6 @@
 
             @foreach ($jobs as $job)
                 @php
-                    // defensive: ensure employer relation exists
                     $employer = $job->employer ?? null;
                     $isMyJob = false;
                     if ($employer && auth()->check()) {
