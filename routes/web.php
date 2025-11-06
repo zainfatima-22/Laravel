@@ -3,6 +3,7 @@
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\RegisteredUserController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /* Route::get('test', function (){
@@ -24,7 +25,7 @@ Route::controller(JobController::class)->group(function(){
     Route::delete('/jobs/{job}', 'destroy');
     Route::patch('/jobs/{job}', 'edit')->middleware('auth');
 }); 
-
+Route::get('/user', [UserController::class, 'index']);
 /* Route::resource('jobs', JobController::class); */
 
 Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
