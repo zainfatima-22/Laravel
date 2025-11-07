@@ -17,6 +17,7 @@ class RegisteredUserController extends Controller
         'password'=> ['required', 'confirmed'],
         ]);
         $user = User::create($validatedAttributes);
+        \App\Jobs\WelcomeEmail::dispatch($user);
         Auth::login($user);
         return redirect('/')->with('success', 'Registered successfully.');
     }

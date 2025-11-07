@@ -4,6 +4,7 @@ use App\Http\Controllers\JobController;
 use App\Http\Controllers\RegisteredUserController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Route;
 
 /* Route::get('test', function (){
@@ -13,8 +14,43 @@ use Illuminate\Support\Facades\Route;
     return 'done';
 }); */
 
-// 
-Route::view('/', "welcome");
+//Route::view('/', "welcome");
+/* Route::get('/', function(){
+    $chain = [
+        \App\Jobs\PullRepo(),
+        \App\Jobs\PullJob(),
+        \App\Jobs\RunTests(),
+        \App\Jobs\Deploy()
+    ];
+    Bus::chain($chain)->dispatch();
+    $batch = [
+        new \App\Jobs\PullRepo(),
+        new \App\Jobs\PullJob(),
+        new \App\Jobs\RunTests(),
+        new \App\Jobs\Deploy()
+    ];
+    Bus::batch($batch)
+    ->allowFailures()
+    ->catch(function($batch, $e){
+        //
+    })
+    ->then(function ($batch) {
+        //
+    })
+    ->finally(function($batch) {
+        //
+    })
+    ->onQueue('deployments')
+    ->onConnection('database')
+    ->dispatch();
+    
+    \App\jobs\SendWelcomeEmail::dispatch();
+    return view('welcome');
+}); */
+Route::get("/", function () {
+    \App\jobs\SendWelcomeEmail::dispatch();
+    return view("welcome");
+});
 Route::view('/contact', "contact");
 Route::view('/about', "about");
 Route::controller(JobController::class)->group(function(){
@@ -34,3 +70,4 @@ Route::post('/register', [RegisteredUserController::class, 'store']);
 Route::get('/login', [LoginController::class, 'create'])->name('login');
 Route::post('/login', [LoginController::class, 'store']);
 Route::delete('/logout', [LoginController::class, 'destroy']);
+Route::get('/test', [JobController::class, 'dispatchTest']);

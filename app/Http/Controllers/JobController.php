@@ -5,18 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Job; 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate;
+use App\Jobs\FinalizeJobListing;
 
 class JobController extends Controller
 {
     public function index()
     {
-        // 1. Eager Loading Optimization & Selecting Only Needed Columns:
-        // We select only the columns needed from the 'job_listings' table, 
-        // and apply column selection on the eager-loaded 'employer' relationship.
         $jobs = Job::select('id', 'title', 'salary', 'employer_id', 'created_at')
             ->with(['employer' => function ($query) {
-                // IMPORTANT: Always select the foreign key ('id' for the related model)
                 $query->select('id', 'name', 'industry'); 
             }])
             ->latest()
@@ -84,5 +80,22 @@ class JobController extends Controller
         ]);
 
         return redirect('/jobs/' . $job->id)->with('success', 'Job updated successfully.');
+    }
+    public function dispatchTest()
+    {
+        $pendingJob = Job::create([
+            'Title' => 'Test Job for Unique Queue',
+            'Salary' => '90000',
+            'employer_id' => 1,
+            'status' => 'pending' 
+        ]);
+
+        $jobId = $pendingJob->id;
+
+        FinalizeJobListing::dispatch($pendingJob);
+        FinalizeJobListing::dispatch($pendingJob);
+        FinalizeJobListing::dispatch($pendingJob);
+
+        return response("Dispatched 3 identical unique jobs for Job ID: {$jobId}. Check your queue worker logs.", 200);
     }
 }
