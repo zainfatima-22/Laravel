@@ -78,3 +78,15 @@ Route::get('/login', [LoginController::class, 'create'])->name('login');
 Route::post('/login', [LoginController::class, 'store']);
 Route::delete('/logout', [LoginController::class, 'destroy']);
 Route::get('/test', [JobController::class, 'dispatchTest']);
+
+Route::get('/admin', function () {
+    return 'Welcome, Admin!';
+})->middleware('role:admin');
+
+
+Route::get('/create-job', function () {
+    return 'You can create tickets!';
+})->middleware('permission:create ticket');
+
+Route::post('/jobs/create', [JobController::class, 'store'])
+    ->middleware('permission:create ticket');
