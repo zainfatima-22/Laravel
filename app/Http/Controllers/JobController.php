@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Orion\Http\Controllers\Controller;
 use App\Models\Job; 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -10,16 +9,15 @@ use App\Jobs\FinalizeJobListing;
 
 class JobController extends Controller
 {
-    protected $model = Job::class;
+    /* protected $model = Job::class;
     protected $authorization = false;
     protected $policy = null;
     public function authorize($ability, $arguments = [])
     {
         return true; 
-    }
+    } */
 
-
-    /* public function index()
+    public function index()
     {
         $jobs = Job::select('id', 'title', 'salary', 'employer_id', 'created_at')
             ->with(['employer' => function ($query) {
@@ -106,5 +104,5 @@ class JobController extends Controller
         FinalizeJobListing::dispatch($pendingJob);
 
         return response("Dispatched 3 identical unique jobs for Job ID: {$jobId}. Check your queue worker logs.", 200);
-    }  */
+    }  
 }
