@@ -5,10 +5,11 @@ use App\Http\Controllers\JobQueryController;
 use App\Http\Controllers\RegisteredUserController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UserController;
+use Doctrine\DBAL\Portability\Middleware;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Route;
 use Orion\Facades\Orion;
-use function Pest\Laravel\withoutMiddleware;
+
 
 /* Orion::resource('jobs', JobController::class); */
 
