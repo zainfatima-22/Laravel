@@ -66,8 +66,8 @@ Route::controller(JobController::class)->group(function(){
     Route::post('/jobs','store');
     Route::get('/jobs/{job}', 'show');
     Route::delete('/jobs/{job}', 'destroy');
-    Route::patch('/jobs/{job}', 'edit')->middleware('auth');
-});  
+    Route::patch('/jobs/{job}', 'update')->middleware('auth');
+});
 Route::get('/user', [UserController::class, 'index']);
 /* Route::resource('jobs', JobController::class); */
 Route::get('/jobs-query', [JobQueryController::class, 'index']);

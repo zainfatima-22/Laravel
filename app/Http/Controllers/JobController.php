@@ -44,8 +44,8 @@ class JobController extends Controller
         ]);
 
         Job::create([
-            'title' => request('title'),
-            'salary' => request('salary'),
+            'Title' => request('title'),
+            'Salary' => request('salary'),
             'employer_id' => 1 
         ]);
 
@@ -63,7 +63,24 @@ class JobController extends Controller
         return redirect('/jobs')->with('success', 'Job deleted successfully.');
     }
 
-    public function edit(Job $job)
+    public function edit(Job $job){
+            request()->validate([
+            'title' => ['required', 'min:3'],
+            'salary' => ['required'],
+        ]);
+
+        $job->update([
+            'Title' => request('title'),
+            'Salary' => request('salary'),
+            'description' => request('description'),
+            'location' => request('location'),
+            'employment_type' => request('type'),
+        ]);
+
+        return redirect('/jobs/' . $job->id)->with('success', 'Job updated successfully.');
+        }
+
+    public function update(Job $job)
     {
         if (Auth::guest()) {
             return redirect('/login');
@@ -80,11 +97,11 @@ class JobController extends Controller
         ]);
         
         $job->update([
-            'title' => request('title'),
-            'salary' => request('salary'),
+            'Title' => request('title'),
+            'Salary' => request('salary'),
             'description' => request('description'),
             'location' => request('location'),
-            'employment_type' => request('type'),
+            'employment_type' => request('employment_type'),
         ]);
 
         return redirect('/jobs/' . $job->id)->with('success', 'Job updated successfully.');

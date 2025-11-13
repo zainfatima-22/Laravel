@@ -97,7 +97,7 @@
                     {{-- View mode: display actual description if present, otherwise fallback --}}
                     <template x-if="!isEditing">
                         @php
-                            $desc = $job->Description ?? $job->description ?? '';
+                            $desc = $job->description ?? $job->description ?? '';
                         @endphp
 
                         @if(!empty(trim($desc)))
