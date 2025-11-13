@@ -9,7 +9,7 @@ class Job extends Model{
     use HasFactory;
     protected $table = 'job_listings' ;
     protected $primaryKey = 'id';
-    /* protected $fillable = ['Title', 'Salary', 'employer_id']; */
+    protected $fillable = ['Title', 'Salary', 'employer_id', 'location', 'description', 'employment_type']; 
     protected $guarded = [];
 
     public function employer(){
@@ -18,10 +18,10 @@ class Job extends Model{
     public function tags()
     {
         return $this->belongsToMany(
-            Tag::class,      // 1. Related Model
-            table:'job_tags',      // 2. Pivot Table Name
-            foreignPivotKey:'job_listings_id', // 3. Foreign Pivot Key (the Job's ID in the pivot table)
-            relatedPivotKey:'tag_id'         // 4. Related Pivot Key (the Tag's ID in the pivot table)
+            Tag::class,      
+            table:'job_tags',      
+            foreignPivotKey:'job_listings_id', 
+            relatedPivotKey:'tag_id'        
         );
     }
 }
